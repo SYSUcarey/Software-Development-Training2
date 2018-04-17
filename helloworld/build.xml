@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="HelloWorld" default="run" basedir=".">
+  <property name="src" value="src"/>
+  <property name="classes" value="classes"/>
+  <property name="lib" value="lib"/>
+
+  <target name="init">
+  <mkdir dir="${classes}"/>
+  <mkdir dir="${lib}"/>
+  </target>
+ 
+  <target name="clean">
+    <delete dir="${classes}"/>
+    <delete dir="${lib}"/>
+  </target>
+
+  <target name="jar" depends="compile">
+    <jar jarfile="${lib}/helloworld.jar">
+      <fileset dir="${classes}"/>
+      <manifest>
+        <attribute name="Main-class" value="helloworld"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="compile" depends="init">
+    <javac srcdir="${src}" destdir="${classes}">
+	 <include name="helloworld.java"/>
+    </javac>
+  </target>
+
+  <target name="run" depends="compile">
+    <java classname="helloworld" classpath="${classes}"/>
+  </target>
+
+  <target name="test">
+    <javac srcdir="${src}" destdir="${classes}">
+      <include name="HelloWorldTest.java"/>
+      <include name="HelloWorld.java"/>
+    </javac>
+    <java  classname="org.junit.runner.JUnitCore" >
+	<arg value="HelloWorldTest"/>
+	<classpath>
+		<pathelement path="${classes}"/>
+		<pathelement path="${src}/junit-4.9.jar"/>
+	</classpath>
+    </java>
+  </target>
+</project>   
+
